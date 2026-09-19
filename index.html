@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Un detalle hecho con todo mi amor</title>
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background: url('fondo.jpg') no-repeat center center fixed;
+      background-size: cover;
+      color: #4a3728;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      text-align: center;
+      padding: 15px;
+      font-family: 'Poppins', sans-serif;
+      position: relative;
+      overflow-x: hidden;
+      transition: background-color 1.2s ease;
+    }
+
+    body.modo-oscuro {
+      background-color: #0d0d0d !important;
+      background-image: none !important;
+    }
+
+    #bloqueo {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 12px;
+      width: 95%;
+      max-width: 680px;
+      margin: 0 auto;
+      background: rgba(255, 255, 255, 0.35);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      padding: 22px 30px;
+      border-radius: 24px;
+      border: 1px solid rgba(255, 255, 255, 0.6);
+      box-shadow: 0 8px 25px rgba(180, 150, 130, 0.12);
+      position: relative;
+      transition: opacity 1s ease, transform 1s ease;
+    }
+
+    #bloqueo h1 {
+      font-family: 'Pacifico', cursive;
+      font-size: clamp(1.2rem, 3.2vw, 1.8rem);
+      font-weight: 400;
+      color: #382415;
+      line-height: 1.4;
+    }
+
+    .subtexto {
+      font-size: clamp(0.85rem, 2vw, 0.95rem);
+      color: #5c4535;
+      line-height: 1.3;
+    }
+
+    .fecha-destacada {
+      font-family: 'Pacifico', cursive;
+      font-size: clamp(1rem, 2.8vw, 1.3rem);
+      color: #c86d3b;
+    }
+
+    #reloj {
+      width: 100%;
+      max-width: 450px;
+      font-family: 'Pacifico', cursive;
+      font-size: clamp(1.6rem, 5vw, 2.4rem);
+      color: #c86d3b;
+      background: rgba(255, 248, 242, 0.4);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      padding: 12px 20px;
+      border-radius: 18px;
+      border: 1px solid rgba(200, 109, 59, 0.25);
+      box-shadow: 0 4px 15px rgba(200, 109, 59, 0.06);
+      letter-spacing: 1px;
+      transition: color 0.4s ease, border-color 0.4s ease;
+    }
+
+    #reloj.en-cero {
+      color: #e63946 !important;
+      border-color: rgba(230, 57, 70, 0.6) !important;
+      animation: parpadeoConstante 1s infinite ease-in-out;
+    }
+
+    @keyframes parpadeoConstante {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.25; }
+    }
+
+    #bloqueo.rompiendo {
+      opacity: 0;
+      transform: scale(1.08) rotate(-1.5deg);
+      filter: blur(12px) drop-shadow(0 0 15px rgba(0,0,0,0.5));
+      pointer-events: none;
+    }
+
+    .particula-cristal {
+      position: absolute;
+      background: rgba(255, 255, 255, 0.7);
+      backdrop-filter: blur(5px);
+      border: 1px solid rgba(255,255,255,0.8);
+      pointer-events: none;
+      z-index: 100;
+      animation: desintegrar 1.2s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+    }
+
+    @keyframes desintegrar {
+      0% {
+        opacity: 1;
+        transform: translate(0, 0) rotate(0deg) scale(1);
+      }
+      100% {
+        opacity: 0;
+        transform: translate(var(--tx), var(--ty)) rotate(var(--rot)) scale(0.2);
+      }
+    }
+
+    /* MENSAJE INTERMEDIO (TRANSICIÓN DE 2 SEGUNDOS) */
+    #mensaje-intermedio {
+      display: none;
+      opacity: 0;
+      width: 95%;
+      max-width: 680px;
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(15px);
+      -webkit-backdrop-filter: blur(15px);
+      padding: 35px 30px;
+      border-radius: 24px;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+      color: #fff;
+      transition: opacity 2s ease;
+    }
+
+    #mensaje-intermedio h1 {
+      font-family: 'Pacifico', cursive;
+      font-size: clamp(1.6rem, 4.5vw, 2.4rem);
+      color: #f4a261;
+      margin-bottom: 12px;
+    }
+
+    #mensaje-intermedio p {
+      color: #e0e0e0;
+      font-size: clamp(0.9rem, 2.2vw, 1.05rem);
+    }
+
+    /* CONTENIDO FINAL */
+    #contenido-final {
+      display: none;
+      opacity: 0;
+      width: 95%;
+      max-width: 800px;
+      background: rgba(255, 255, 255, 0.12);
+      backdrop-filter: blur(15px);
+      -webkit-backdrop-filter: blur(15px);
+      padding: 35px 30px;
+      border-radius: 24px;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      color: #fff;
+      transition: opacity 1.5s ease;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- PANTALLA DE BLOQUEO -->
+  <div id="bloqueo">
+    <h1>Algo muy especial se está preparando para ti...</h1>
+    <p class="subtexto">Podrás descubrir tu sorpresa en cuanto la cuenta regresiva llegue a cero.</p>
+    <p class="fecha-destacada">21 de Septiembre | 2:00 PM</p>
+    <div id="reloj">00d 00h 00m 00s</div>
+  </div>
+
+  <!-- MENSAJE INTERMEDIO (APARECE 2s, DURA 6s) -->
+  <div id="mensaje-intermedio">
+    <h1>¡Feliz 21 de Septiembre!</h1>
+    <p>Gracias por estar a mi lado. Hoy he preparado algo muy especial para ti...</p>
+  </div>
+
+  <!-- CONTENIDO FINAL (LO QUE SE VERÁ DESPUÉS) -->
+  <div id="contenido-final">
+    <h2>Tu sorpresa está aquí</h2>
+    <p>A partir de aquí puedes agregar tus fotos, galerías, mensajes principales y reproductor de música.</p>
+  </div>
+
+  <script>
+    const fechaObjetivo = new Date("Sep 1, 2026 14:00:00").getTime();
+    let ejecutado = false;
+
+    function crearEfectoCristalRoto() {
+      const bloqueo = document.getElementById("bloqueo");
+      const rect = bloqueo.getBoundingClientRect();
+      const numPiezas = 24;
+
+      for (let i = 0; i < numPiezas; i++) {
+        const pieza = document.createElement("div");
+        pieza.classList.add("particula-cristal");
+
+        const ancho = Math.random() * 40 + 20;
+        const alto = Math.random() * 40 + 20;
+        const posX = rect.left + Math.random() * (rect.width - ancho);
+        const posY = rect.top + Math.random() * (rect.height - alto);
+
+        pieza.style.width = `${ancho}px`;
+        pieza.style.height = `${alto}px`;
+        pieza.style.left = `${posX}px`;
+        pieza.style.top = `${posY}px`;
+
+        const tx = (Math.random() - 0.5) * 400;
+        const ty = (Math.random() - 0.5) * 400 + 100;
+        const rot = (Math.random() - 0.5) * 360;
+
+        pieza.style.setProperty('--tx', `${tx}px`);
+        pieza.style.setProperty('--ty', `${ty}px`);
+        pieza.style.setProperty('--rot', `${rot}deg`);
+
+        document.body.appendChild(pieza);
+
+        setTimeout(() => pieza.remove(), 1200);
+      }
+    }
+
+    function iniciarSecuenciaDesbloqueo() {
+      if (ejecutado) return;
+      ejecutado = true;
+
+      const reloj = document.getElementById("reloj");
+      const bloqueo = document.getElementById("bloqueo");
+      const mensaje = document.getElementById("mensaje-intermedio");
+      const final = document.getElementById("contenido-final");
+
+      reloj.innerHTML = "00d 00h 00m 00s";
+      reloj.classList.add("en-cero");
+
+      // 1. Pasan 5 segundos con el reloj parpadeando
+      setTimeout(() => {
+        document.body.classList.add("modo-oscuro");
+        bloqueo.classList.add("rompiendo");
+        crearEfectoCristalRoto();
+
+        setTimeout(() => {
+          bloqueo.style.display = "none";
+          mensaje.style.display = "block";
+          
+          // 2. Aparece el mensaje con transición de 2 segundos
+          setTimeout(() => {
+            mensaje.style.opacity = "1";
+          }, 100);
+
+          // 3. Permanece visible por 6 segundos (2s animación + 6s lectura)
+          setTimeout(() => {
+            mensaje.style.opacity = "0"; // Desaparece
+
+            setTimeout(() => {
+              mensaje.style.display = "none";
+              final.style.display = "block";
+              
+              // 4. Muestra el contenido final definitivo
+              setTimeout(() => {
+                final.style.opacity = "1";
+              }, 100);
+            }, 2000); // Espera a que termine de desvanecerse
+
+          }, 8000); // 2000ms de entrada + 6000ms de permanencia = 8000ms total
+
+        }, 1000);
+
+      }, 5000);
+    }
+
+    const intervalo = setInterval(() => {
+      const ahora = new Date().getTime();
+      const diferencia = fechaObjetivo - ahora;
+
+      if (diferencia <= 0) {
+        clearInterval(intervalo);
+        iniciarSecuenciaDesbloqueo();
+      } else {
+        const dias = Math.floor(diferencia / (1000 * 60 * 60 * 24));
+        const horas = Math.floor((diferencia % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        const minutos = Math.floor((diferencia % (1000 * 60 * 60)) / (1000 * 60));
+        const segundos = Math.floor((diferencia % (1000 * 60)) / 1000);
+
+        document.getElementById("reloj").innerHTML = 
+          `${dias}d ${horas}h ${minutos}m ${segundos}s`;
+      }
+    }, 1000);
+  </script>
+
+</body>
+</html>
