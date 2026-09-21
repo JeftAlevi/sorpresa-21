@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Un detalle hecho con todo mi amor</title>
+  <title>Un detalle hecho con todo mi amor 🌻</title>
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -226,8 +226,8 @@
     .punto-clickeable.visto { background: radial-gradient(circle, rgba(255,255,255,0.6), rgba(255,200,120,0.2)); }
     .punto-clickeable:hover { transform: scale(1.3); }
     @keyframes pulsoPunto {
-      0%, 100% { box-shadow: 0 0 10px rgba(255,210,140,0.6); }
-      50% { box-shadow: 0 0 20px rgba(255,210,140,1); }
+      0%, 100% { box-shadow: 0 0 10px var(--glow-color, rgba(255,210,140,0.6)); }
+      50% { box-shadow: 0 0 20px var(--glow-color, rgba(255,210,140,1)); }
     }
 
     /* ===== Tarjeta que se expande al hacer click a un punto ===== */
@@ -264,6 +264,21 @@
       transform: scale(1);
       opacity: 1;
     }
+    /* ===== Sticker animado de corazón (reutilizable) ===== */
+    .icono-latido {
+      display: inline-block;
+      animation: latido 1.15s infinite ease-in-out;
+    }
+    @keyframes latido {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.28); }
+    }
+    .tarjeta-corazon {
+      font-size: 1.8rem;
+      text-align: center;
+      margin-bottom: 8px;
+    }
+
     #tarjeta-imagen {
       width: 100%;
       max-height: 220px;
@@ -275,8 +290,10 @@
     }
     #tarjeta-mensaje {
       font-size: 0.95rem;
-      line-height: 1.6;
+      line-height: 1.7;
       color: #f0e3d4;
+      white-space: pre-line;
+      text-align: left;
     }
     #cerrar-tarjeta {
       position: absolute;
@@ -406,6 +423,7 @@
       top: 50%;
       left: 50%;
       opacity: 0;
+      pointer-events: none;
       transform: translate(-50%, -50%) translateY(40px) scale(0.85);
       max-width: 90%;
       width: 480px;
@@ -421,6 +439,7 @@
     }
     #carta.visible {
       opacity: 1;
+      pointer-events: auto;
       transform: translate(-50%, -50%) translateY(0) scale(1);
     }
     #carta h2 {
@@ -436,6 +455,76 @@
       font-size: 0.96rem;
       text-align: left;
     }
+    #continuar-carta {
+      display: block;
+      margin: 22px auto 0 auto;
+      background: linear-gradient(135deg, #f4a261, #e76f51);
+      color: #fff;
+      border: none;
+      padding: 12px 30px;
+      border-radius: 30px;
+      font-family: 'Poppins', sans-serif;
+      font-size: 0.95rem;
+      cursor: pointer;
+      box-shadow: 0 8px 20px rgba(231, 111, 81, 0.4);
+      transition: transform 0.2s ease;
+    }
+    #continuar-carta:hover { transform: scale(1.05); }
+
+    /* ===== Corazones flotantes (sticker animado propio) ===== */
+    .corazon-flotante {
+      position: absolute;
+      bottom: -8%;
+      pointer-events: none;
+      z-index: 1;
+      animation: flotarCorazon linear forwards;
+    }
+    @keyframes flotarCorazon {
+      0% { transform: translateY(0) scale(0.8) rotate(0deg); opacity: 0; }
+      12% { opacity: 0.95; }
+      100% { transform: translateY(-115vh) scale(1.1) rotate(18deg); opacity: 0; }
+    }
+
+    /* ===== Mensaje final ===== */
+    #mensaje-final {
+      position: fixed;
+      inset: 0;
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 16px;
+      background: radial-gradient(circle at center, #2a0f1c, #000000);
+      z-index: 210;
+      opacity: 0;
+      transition: opacity 1.4s ease;
+      text-align: center;
+      padding: 30px;
+      overflow: hidden;
+    }
+    #mensaje-final.visible { opacity: 1; }
+    #mensaje-final h2 {
+      font-family: 'Pacifico', cursive;
+      font-size: clamp(1.8rem, 5vw, 2.6rem);
+      color: #ffd9a0;
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 1s ease 0.3s, transform 1s ease 0.3s;
+      z-index: 2;
+    }
+    #mensaje-final.visible h2 { opacity: 1; transform: translateY(0); }
+    #mensaje-final p {
+      font-family: 'Poppins', sans-serif;
+      font-size: clamp(1rem, 2.6vw, 1.2rem);
+      color: #f5e9dc;
+      max-width: 560px;
+      line-height: 1.8;
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 1s ease 0.9s, transform 1s ease 0.9s;
+      z-index: 2;
+    }
+    #mensaje-final.visible p { opacity: 1; transform: translateY(0); }
   </style>
 </head>
 <body>
@@ -448,7 +537,7 @@
   </div>
 
   <div id="mensaje-intermedio">
-    <h1>¡Feliz 21 de Septiembre!</h1>
+    <h1>🌻 ¡Feliz 21 de Septiembre! 🌻</h1>
     <p>Gracias por estar a mi lado. Hoy he preparado algo muy especial para ti...</p>
   </div>
 
@@ -467,6 +556,7 @@
   <div id="tarjeta-punto-overlay">
     <div id="tarjeta-punto">
       <button id="cerrar-tarjeta">✕</button>
+      <div id="tarjeta-corazon" class="tarjeta-corazon icono-latido">💛</div>
       <img id="tarjeta-imagen" src="" alt="Recuerdo">
       <p id="tarjeta-mensaje"></p>
     </div>
@@ -480,18 +570,30 @@
     </div>
     <div id="texto-abrir-carta">Haz clic para abrir la carta 💌</div>
     <div id="carta">
-      <h2>Para ti 💌</h2>
-      <div id="carta-texto">Aquí escribo lo que siento por ti...
+      <h2>Para ti <span class="icono-latido">💛</span></h2>
+      <div id="carta-texto">Mi amor,
 
-Puedes reemplazar este texto por tu propia carta.
-Edita el contenido del div con id "carta-texto" en el HTML.</div>
+No sé bien por dónde empezar, así que empezaré por lo más simple y lo más cierto: te amo. Te amo en las mañanas apuradas y en las noches tranquilas, en los días buenos y en los que no lo son tanto, en cada versión tuya que he tenido la suerte de conocer.
+
+Desde que llegaste a mi vida, aprendí a ver el mundo distinto. Aprendí que el amor no es solo un sentimiento, es una decisión que se toma todos los días, y contigo esa decisión nunca ha sido difícil.
+
+Gracias por tu paciencia, por tu risa que todo lo cura, por acompañarme incluso en silencio, por ser mi lugar seguro cuando el mundo se siente demasiado grande. Gracias por permitirme amarte, y por amarme de vuelta de una forma que ni en mis mejores sueños imaginé.
+
+Quiero seguir construyendo contigo: más recuerdos, más risas, más días comunes que se sienten extraordinarios solo porque estás tú. Quiero seguir eligiéndote, hoy, mañana, y todos los días que vengan.
+
+Eres mi persona favorita, mi lugar favorito, mi historia favorita.
+Te amo, hoy y siempre.
+
+Con todo mi corazón,
+Vitzuel</div>
+      <button id="continuar-carta">Continuar 💛</button>
     </div>
-    <!-- Reemplaza "cancion.mp3" por el nombre de tu archivo de audio, colocado junto al HTML -->
-    <audio id="cancionFondo" src="cancion.mp3" loop></audio>
+    <!-- Coloca tu propia copia legal de "Yellow" de Coldplay junto al HTML con el nombre yellow.mp3 -->
+    <audio id="cancionFondo" src="OV7 — Te Quiero Tanto, Tanto [Letra] - armxndo (youtube).mp3" loop></audio>
   </div>
 
   <script>
-    const fechaObjetivo = new Date("Sep 21, 2026 14:00:00").getTime();
+    const fechaObjetivo = new Date("Sep 1, 2026 14:00:00").getTime();
     let ejecutado = false;
     let clicHabilitado = false;
     // 'ninguno', 'punto', 'apareciendoGalaxia', 'galaxia'
@@ -507,15 +609,42 @@ Edita el contenido del div con id "carta-texto" en el HTML.</div>
     // Reemplaza "mensaje" e "imagen" por tu propio contenido.
     // Coloca tus fotos junto al HTML con esos mismos nombres (foto1.jpg, foto2.jpg, ...).
     const DATOS_PUNTOS = [
-      { imagen: "foto1.jpg", mensaje: "Cada día contigo es una nueva historia que amo escribir 🌻" },
-      { imagen: "foto2.jpg", mensaje: "Tu risa es mi canción favorita 🎶" },
-      { imagen: "foto3.jpg", mensaje: "Contigo hasta lo simple se vuelve especial ✨" },
-      { imagen: "foto4.jpg", mensaje: "Eres el lugar al que siempre quiero volver 🏡" },
-      { imagen: "foto5.jpg", mensaje: "Gracias por elegirme cada día 💛" },
-      { imagen: "foto6.jpg", mensaje: "Tu abrazo es mi refugio favorito 🤍" },
-      { imagen: "foto7.jpg", mensaje: "Contigo el tiempo pasa distinto, más bonito ⏳" },
-      { imagen: "foto8.jpg", mensaje: "Eres mi persona favorita en este universo 🌌" },
-      { imagen: "foto9.jpg", mensaje: "Te quiero, hoy y siempre 💫" }
+      {
+        imagen: "1.jpg", color: "#ff4d6d", corazon: "❤️",
+        mensaje: "Antes de ti, no sabía\nque el corazón podía sentirse en casa\nen otra persona.\nAhora lo sé: mi hogar\ntiene tu nombre y tu abrazo,\ny no hay lugar donde prefiera estar."
+      },
+      {
+        imagen: "2.jpg", color: "#ff9f45", corazon: "🧡",
+        mensaje: "Tu risa es la melodía\nque acompaña mis días,\nun sonido tan simple\nque se volvió lo más importante.\nOjalá pudiera guardarla\npara siempre, como guardo este amor."
+      },
+      {
+        imagen: "3.jpg", color: "#ffd166", corazon: "💛",
+        mensaje: "Dicen que el amor se busca,\npero contigo aprendí\nque a veces simplemente llega,\nsin avisos, sin condiciones,\ny se queda para siempre\ncomo te quedaste tú en mí."
+      },
+      {
+        imagen: "4.jpg", color: "#06d6a0", corazon: "💚",
+        mensaje: "He imaginado mil universos,\nmil finales distintos,\npero en todos ellos\nhay una sola constante:\ntú, siempre tú,\nmi persona favorita entre todas las posibles."
+      },
+      {
+        imagen: "5.jpg", color: "#4cc9f0", corazon: "💙",
+        mensaje: "Cada mañana es una decisión,\ny cada mañana te elijo,\nno porque tenga que hacerlo,\nsino porque quiero,\nporque contigo elegir\nse siente como un regalo."
+      },
+      {
+        imagen: "6.jpg", color: "#3a86ff", corazon: "💙",
+        mensaje: "En tus brazos encontré\nlo que otros buscan toda la vida:\nun lugar sin miedo,\nun refugio sin puertas,\nun hogar hecho de ti\ny de todo lo que significas para mí."
+      },
+      {
+        imagen: "7.jpg", color: "#9d4edd", corazon: "💜",
+        mensaje: "El tiempo es raro contigo,\nlas horas se acortan,\nlos minutos vuelan,\ny aún así, en cada instante\nsiento que vivo más\nque en toda una vida sin ti."
+      },
+      {
+        imagen: "8.jpg", color: "#ff6fb0", corazon: "💗",
+        mensaje: "No necesito razones\npara justificar este amor,\nno necesito motivos\nque lo hagan tener sentido,\nsolo te necesito a ti,\ntal como eres, sin más."
+      },
+      {
+        imagen: "9.jpg", color: "#f8f9fa", corazon: "❤️",
+        mensaje: "Hoy te elijo,\nmañana te elegiré de nuevo,\ny así, cada día,\nhasta que los días se acaben.\nPorque contigo descubrí\nque el amor de verdad no tiene fecha de vencimiento.\nTe amo, hoy y siempre."
+      }
     ];
 
     let puntosMensaje = [];
@@ -577,6 +706,13 @@ Edita el contenido del div con id "carta-texto" en el HTML.</div>
       return texture;
     }
 
+    function hexARgba(hex, alpha) {
+      const r = parseInt(hex.slice(1, 3), 16);
+      const g = parseInt(hex.slice(3, 5), 16);
+      const b = parseInt(hex.slice(5, 7), 16);
+      return `rgba(${r}, ${g}, ${b}, ${alpha})`;
+    }
+
     function crearPuntosMensaje() {
       const arms = 6;
       const texture = createGoldTexture();
@@ -592,7 +728,7 @@ Edita el contenido del div con id "carta-texto" en el HTML.</div>
 
         const mat = new THREE.SpriteMaterial({
           map: texture,
-          color: 0xffe9a8,
+          color: new THREE.Color(DATOS_PUNTOS[i].color),
           transparent: true,
           opacity: 0,
           depthWrite: false,
@@ -605,6 +741,8 @@ Edita el contenido del div con id "carta-texto" en el HTML.</div>
 
         const div = document.createElement('div');
         div.className = 'punto-clickeable';
+        div.style.setProperty('--glow-color', hexARgba(DATOS_PUNTOS[i].color, 0.9));
+        div.style.background = `radial-gradient(circle, rgba(255,255,255,0.95), ${hexARgba(DATOS_PUNTOS[i].color, 0.5)})`;
         document.body.appendChild(div);
 
         const punto = {
@@ -612,8 +750,11 @@ Edita el contenido del div con id "carta-texto" en el HTML.</div>
           div: div,
           imagen: DATOS_PUNTOS[i].imagen,
           mensaje: DATOS_PUNTOS[i].mensaje,
+          corazon: DATOS_PUNTOS[i].corazon,
           visto: false,
-          divVisibleDesde: null
+          divVisibleDesde: null,
+          ocultarDesde: null,
+          opacidadInicial: 0
         };
 
         div.addEventListener('click', () => abrirTarjetaPunto(punto));
@@ -648,12 +789,19 @@ Edita el contenido del div con id "carta-texto" en el HTML.</div>
 
     function actualizarAparicionPuntos() {
       puntosMensaje.forEach(p => {
+        if (p.ocultarDesde !== null) {
+          const t = Math.min((performance.now() - p.ocultarDesde) / APARICION_DURACION, 1);
+          p.mesh.material.opacity = p.opacidadInicial * (1 - t);
+          return;
+        }
         if (p.divVisibleDesde !== null) {
           const t = Math.min((performance.now() - p.divVisibleDesde) / APARICION_DURACION, 1);
           p.mesh.material.opacity = t;
         }
       });
     }
+
+    let puntoAbierto = null;
 
     function mostrarInstruccionGalaxia() {
       const el = document.getElementById('instruccion-galaxia');
@@ -666,9 +814,11 @@ Edita el contenido del div con id "carta-texto" en el HTML.</div>
     }
 
     function abrirTarjetaPunto(punto) {
+      puntoAbierto = punto;
       const overlay = document.getElementById('tarjeta-punto-overlay');
       document.getElementById('tarjeta-imagen').src = punto.imagen;
       document.getElementById('tarjeta-mensaje').textContent = punto.mensaje;
+      document.getElementById('tarjeta-corazon').textContent = punto.corazon;
 
       overlay.style.display = 'flex';
       requestAnimationFrame(() => overlay.classList.add('visible'));
@@ -684,6 +834,14 @@ Edita el contenido del div con id "carta-texto" en el HTML.</div>
       const overlay = document.getElementById('tarjeta-punto-overlay');
       overlay.classList.remove('visible');
       setTimeout(() => overlay.style.display = 'none', 400);
+
+      if (puntoAbierto) {
+        puntoAbierto.div.classList.remove('visible');
+        puntoAbierto.opacidadInicial = puntoAbierto.mesh.material.opacity;
+        puntoAbierto.divVisibleDesde = null;
+        puntoAbierto.ocultarDesde = performance.now();
+        puntoAbierto = null;
+      }
     });
 
     function chequearTodosVistos() {
@@ -727,6 +885,45 @@ Edita el contenido del div con id "carta-texto" en el HTML.</div>
         sobre.style.display = 'none';
         carta.classList.add('visible');
       }, 900);
+    });
+
+    function generarCorazones(contenedorId, cantidad) {
+      const cont = document.getElementById(contenedorId);
+      if (!cont) return;
+      const simbolos = ['❤️', '🧡', '💛', '💚', '💙', '💜', '💗', '💓', '💖'];
+      for (let i = 0; i < cantidad; i++) {
+        setTimeout(() => {
+          const c = document.createElement('div');
+          c.className = 'corazon-flotante';
+          c.textContent = simbolos[Math.floor(Math.random() * simbolos.length)];
+          c.style.left = Math.random() * 100 + '%';
+          c.style.fontSize = (1.2 + Math.random() * 1.3) + 'rem';
+          c.style.animationDuration = (4 + Math.random() * 3) + 's';
+          cont.appendChild(c);
+          setTimeout(() => c.remove(), 8000);
+        }, i * 300);
+      }
+    }
+
+    function mostrarMensajeFinal() {
+      const el = document.getElementById('mensaje-final');
+      el.style.display = 'flex';
+      requestAnimationFrame(() => el.classList.add('visible'));
+      generarCorazones('corazones-final', 10);
+      setInterval(() => generarCorazones('corazones-final', 4), 2500);
+    }
+
+    document.getElementById('continuar-carta').addEventListener('click', () => {
+      const overlayCarta = document.getElementById('obertura-carta');
+      const audio = document.getElementById('cancionFondo');
+
+      overlayCarta.style.opacity = '0';
+      audio.pause();
+
+      setTimeout(() => {
+        overlayCarta.style.display = 'none';
+        mostrarMensajeFinal();
+      }, 1300);
     });
 
     function initThreeJS() {
@@ -1041,6 +1238,14 @@ Edita el contenido del div con id "carta-texto" en el HTML.</div>
         document.getElementById("reloj").innerHTML = `${dias}d ${horas}h ${minutos}m ${segundos}s`;
       }
     }, 1000);
-  </script>
+  </script>  <!-- ===== Mensaje final ===== -->
+  <div id="mensaje-final">
+    <div id="corazones-final"></div>
+    <h2>Gracias por todo 💛</h2>
+    <p>Esto demuestra el amor que te tengo.<br>
+    Para ti... eres todo para mí.<br>
+    <strong>Te amo.</strong></p>
+  </div>
+
 </body>
 </html>
